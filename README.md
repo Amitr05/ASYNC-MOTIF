@@ -90,7 +90,7 @@ Human PM Approves ──► Automated PRD Generation & GitHub Issue Creation
 | **Embeddings** | `all-MiniLM-L6-v2` (Sentence Transformers, runs locally) |
 | **Clustering** | HDBSCAN (`scikit-learn`) |
 | **LLM Synthesis** | Groq API (default `llama-3.3-70b-versatile`, with automatic fallback to other Groq-hosted models); Gemini and OpenAI also supported; offline fallback |
-| **Frontend Triage UI** | Next.js 16 + React 19 + Tailwind CSS 4 |
+| **Frontend Triage UI** | Next.js 16 + React 19 + Tailwind CSS 4 + React Bits (vendored motion components) |
 | **Infrastructure** | Docker Compose |
 | **Integrations** | GitHub REST API (live when a token is set). Notion, Google Drive (service account), Slack and GitHub Issues: read-only connectors that sync into a project |
 
@@ -351,7 +351,11 @@ pytest
 
 **Libraries** (installed from `requirements.txt` and `triage-ui/package.json`, not copied into the repo)
 - Backend: FastAPI (MIT), SQLAlchemy (MIT), Alembic (MIT), asyncpg (Apache-2.0), pgvector-python (MIT), scikit-learn (BSD-3-Clause), sentence-transformers (Apache-2.0), httpx (BSD-3-Clause), Pydantic (MIT), MarkItDown (MIT) for document import, PyJWT (MIT) for verifying sign-in tokens, cryptography (Apache-2.0/BSD) for encrypting connector tokens.
-- Frontend: Next.js (MIT), React (MIT), Tailwind CSS (MIT), lucide-react icons (ISC), supabase-js (MIT) for sign-in.
+- Frontend: Next.js (MIT), React (MIT), Tailwind CSS (MIT), lucide-react icons (ISC), supabase-js (MIT) for sign-in, `motion` (MIT) and `gsap` (GreenSock standard "no charge" license) for animation, `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` (SIL OFL 1.1) for self-hosted type.
+
+**Design system and animation components**
+- `triage-ui/src/components/reactbits/` contains four components vendored from [React Bits](https://reactbits.dev) — SpotlightCard, CountUp, BlurText and AnimatedContent — in their TypeScript + Tailwind variants, exactly as published by the React Bits registry (the same payload their CLI installs). React Bits is licensed **MIT + Commons Clause License Condition v1.0**, © 2026 David Haz; the Commons Clause permits use "as part of an application, website, or product" and forbids reselling the components themselves. Every vendored file keeps its attribution header. No other React Bits components are copied into this repository.
+- The interface typefaces are **Inter** and **JetBrains Mono**, self-hosted through `@fontsource-variable/*` (SIL OFL 1.1). Neither Atlassian brand font (Atlassian Sans / Charlie Sans) is used or redistributed; Inter is a documented substitute.
 
 **Models, services and images**
 - Embedding model: [`sentence-transformers/all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) (Apache-2.0), downloaded at runtime, not redistributed.
