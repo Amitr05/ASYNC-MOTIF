@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import AnimatedContent from "@/components/reactbits/AnimatedContent";
 import BlurText from "@/components/reactbits/BlurText";
 import { AppShell, PageHeader, type ShellTab } from "@/components/motif/AppShell";
+import { InkBand, PaletteStrip } from "@/components/lab/BrandShowcase";
 import { Inspector } from "@/components/motif/Inspector";
 import { ThemeCard } from "@/components/motif/ThemeCard";
 import { Button } from "@/components/ui/Button";
@@ -176,6 +177,7 @@ export default function DesignLab() {
   const [selectedId, setSelectedId] = useState<string>(THEMES[0].id);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [dark, setDark] = useState(false);
+  const [chrome, setChrome] = useState<"paper" | "ink">("paper");
 
   const queue = useMemo(
     () =>
@@ -218,6 +220,7 @@ export default function DesignLab() {
     <AppShell
       tab={tab}
       onTabChange={setTab}
+      chrome={chrome}
       apiOnline={false}
       pendingCount={pending}
       userEmail="pm@motif.dev"
@@ -231,6 +234,13 @@ export default function DesignLab() {
         />
         <div className="flex items-center gap-2">
           <Lozenge tone="info">Design lab · mock data</Lozenge>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setChrome(chrome === "paper" ? "ink" : "paper")}
+          >
+            {chrome === "paper" ? "Ink" : "Paper"} chrome
+          </Button>
           <Button variant="secondary" size="sm" onClick={toggleTheme}>
             {dark ? "Light" : "Dark"} theme
           </Button>
@@ -266,6 +276,7 @@ export default function DesignLab() {
           label="Precision @3"
           value={METRICS.precision_at_3}
           suffix="%"
+          tone="accent"
           target={METRICS.target_precision_at_3}
           hint="vs. hand-labelled ground truth"
         />
@@ -273,6 +284,7 @@ export default function DesignLab() {
           label="Accepted as-is"
           value={METRICS.acceptance_rate}
           suffix="%"
+          tone="brand"
           target={METRICS.target_acceptance_rate}
           hint={`${METRICS.pm_decisions_count} PM decisions`}
         />
@@ -350,6 +362,11 @@ export default function DesignLab() {
         </aside>
       </div>
 
+      <div className="mt-5 space-y-5">
+        <InkBand />
+        <PaletteStrip />
+      </div>
+
       {/* Connectors */}
       <Surface className="mt-5 overflow-hidden">
         <SectionHeader
@@ -388,8 +405,10 @@ export default function DesignLab() {
       <p className="mt-5 text-xs leading-5 text-text-subtlest">
         React Bits components live in <code className="font-mono">src/components/reactbits/</code>{" "}
         (SpotlightCard, CountUp, BlurText, AnimatedContent — MIT + Commons Clause, © 2026 David
-        Haz) and the primitives in <code className="font-mono">src/components/ui/</code>. Plan and
-        component mapping: <code className="font-mono">docs/ui/UI-REDESIGN-PLAN.md</code>.
+        Haz) and the primitives in <code className="font-mono">src/components/ui/</code>. Tokens:
+        sage / evergreen / ink / marine (#1E8FD5) in{" "}
+        <code className="font-mono">src/app/globals.css</code>. Plan and component mapping:{" "}
+        <code className="font-mono">docs/ui/UI-REDESIGN-PLAN.md</code>.
       </p>
     </AppShell>
   );

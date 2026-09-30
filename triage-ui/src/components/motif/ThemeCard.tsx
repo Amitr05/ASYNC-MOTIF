@@ -13,7 +13,7 @@ import type { Theme } from "@/utils/types";
 const RULE: Record<string, string> = {
   critical: "bg-risk-critical",
   high: "bg-risk-high",
-  low: "bg-border-strong",
+  low: "bg-sage",
 };
 
 export function ThemeCard({
@@ -40,10 +40,10 @@ export function ThemeCard({
 
   return (
     <SpotlightCard
-      spotlightColor={selected ? "rgba(24, 104, 219, 0.10)" : "rgba(9, 30, 66, 0.06)"}
+      spotlightColor={selected ? "rgba(30, 143, 213, 0.12)" : "rgba(12, 19, 16, 0.05)"}
       className={cn(
         "relative overflow-hidden rounded-md border bg-surface transition-colors duration-150 ease-standard",
-        selected ? "border-brand" : "border-border hover:border-border-strong",
+        selected ? "border-accent" : "border-border hover:border-border-strong",
         (approved || rejected) && "opacity-80",
       )}
     >
@@ -59,7 +59,7 @@ export function ThemeCard({
               )}
               <button
                 onClick={onSelect}
-                className="truncate text-left text-sm font-bold text-text hover:text-brand"
+                className="truncate text-left text-sm font-bold text-text hover:text-accent-ink"
               >
                 {theme.title}
               </button>

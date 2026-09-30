@@ -3,10 +3,18 @@ import { cn } from "@/utils/cn";
 /*
  * Lozenge — the atomic unit of Motif's status language (Atlassian ADS pattern).
  * Status is always: coloured, uppercase, small, readable at 12px minimum.
+ *
+ * Colour meanings are fixed across the product:
+ *   evergreen  → the product brand, approvals
+ *   marine     → discovered/AI themes and insight metrics
+ *   sage       → neutral, synced, low-risk metadata
+ *   rust/gold  → revenue at risk
  */
 export type LozengeTone =
   | "default"
   | "brand"
+  | "marine"
+  | "sage"
   | "info"
   | "success"
   | "discovery"
@@ -17,6 +25,8 @@ export type LozengeTone =
 const TONES: Record<LozengeTone, string> = {
   default: "bg-surface-hover text-text-subtle",
   brand: "bg-brand-subtle text-brand",
+  marine: "bg-accent-subtle text-accent-ink",
+  sage: "bg-sage-tint text-sage-ink",
   info: "bg-info-subtle text-info",
   success: "bg-success-subtle text-success",
   discovery: "bg-discovery-subtle text-discovery",

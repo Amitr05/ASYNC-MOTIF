@@ -28,7 +28,7 @@ export function MetricTile({
   hint?: React.ReactNode;
   /** Benchmark target; when given, the tile shows whether we meet it. */
   target?: number;
-  tone?: "default" | "brand" | "success" | "critical";
+  tone?: "default" | "brand" | "accent" | "success" | "critical";
   animate?: boolean;
   className?: string;
 }) {
@@ -38,9 +38,11 @@ export function MetricTile({
       ? "text-risk-critical"
       : tone === "success"
         ? "text-success"
-        : tone === "brand"
-          ? "text-brand"
-          : "text-text";
+        : tone === "accent"
+          ? "text-accent-ink"
+          : tone === "brand"
+            ? "text-brand"
+            : "text-text";
 
   return (
     <div className={cn("px-4 py-3.5", className)}>

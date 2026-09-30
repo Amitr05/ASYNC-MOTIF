@@ -10,7 +10,7 @@
 | Question | Answer |
 | :--- | :--- |
 | **Do we move from Next.js to plain React?** | **No.** Next.js 16 *is* React 19. Every React Bits component is an ordinary client component (`'use client'` + `motion`/`gsap`) and works unmodified in the App Router. Moving to Vite/React Router would cost us the `/api/v1/*` rewrite proxy, font optimisation, route-level code splitting and the dev-server preview — and buy us nothing. Details in [§7](#7-stack-decision-stay-on-nextjs-16). |
-| **What does "look like Atlassian" mean concretely?** | Not "copy their homepage". It means **light, calm, dense, token-driven enterprise UI**: one reserved brand blue (`#1868DB`) for the single primary action, neutral surfaces, a Lozenge for every status, an 8px rhythm, a metric type scale for numbers, and typography that never goes below 12px. Full token set in [§5](#5-design-language-v2--calm-ops). |
+| **What does "look like Atlassian" mean concretely?** | Their *structure*, not their colours. Light, calm, dense, token-driven enterprise UI: one reserved brand colour for the single primary action, neutral surfaces, a Lozenge for every status, an 8px rhythm, a metric type scale for numbers, and typography that never drops below 12px. Motif's palette is its own — **sage, evergreen, ink black and bright marine**. Full token set in [§5](#5-design-language-v2--calm-ops). |
 | **Where does React Bits fit?** | A **curated 12-component shortlist**, not all 210. Each component is copy-pasted from the React Bits registry (their own CLI format) into `src/components/reactbits/` with attribution. Only 4 are client-heavy; the rest are dropped, with reasons, in [§6](#6-react-bits--the-shortlist). Realevate-style scroll choreography is deliberately **rejected** for the product UI ([§4.3](#43-realevateagency--what-to-borrow-and-what-to-refuse)). |
 
 ---
@@ -60,6 +60,7 @@ Atlassian's product design system (ADS) and their marketing site share one visua
 - **Site structure we mirror for the marketing page:** hero + product claim → logo/social-proof marquee → "collections" cards → tabbed product sections → metric band → CTA → dense footer.
 
 **Take:** tokens, metric scale, lozenges, 8px rhythm, one-primary-action rule, calm light surfaces, dense tables.
+**Drop:** their colour values. Atlassian's blue stays theirs; Motif runs sage / evergreen / ink / marine ([§5.1](#51-colour-tokens--sage--evergreen--ink--marine)).
 **Don't take:** their information architecture (a Motif workspace is not a Jira dashboard), their nav (we have two levels, not six), their marketing gradients.
 
 ---
@@ -96,24 +97,33 @@ Its effect stack is a *cinematic narrative*: preload a counter to 100, land on a
 
 A single source of truth replaces both `Design.md` §2 and the ad-hoc classes. Implemented as Tailwind 4 `@theme` tokens in `src/app/globals.css` (no `tailwind.config.ts` needed in v4).
 
-### 5.1 Colour tokens (light = default, dark reserved)
+### 5.1 Colour tokens — sage · evergreen · ink · marine
 
-| Token | Light | Role |
+Four families, no more. Structure and density follow Atlassian; the colours are Motif's.
+
+| Family | Light | Role |
 | :--- | :--- | :--- |
-| `--color-surface` / `--color-surface-sunken` / `--color-surface-raised` | `#FFFFFF` / `#F7F8F9` / `#FFFFFF` | page, wells, cards/modals |
-| `--color-border` / `--color-border-strong` | `#DCDFE4` / `#B3B9C4` | 1px hairlines, inputs |
-| `--color-text` / `--color-text-subtle` / `--color-text-subtlest` | `#172B4D` / `#44546F` / `#6B778C` | headings, body, metadata |
-| `--color-brand` / `--color-brand-hover` / `--color-brand-pressed` / `--color-brand-subtle` | `#1868DB` / `#1558BC` / `#09326C` / `#E9F2FF` | the ONE primary action, links, focus ring |
-| `--color-risk-critical` / `-subtle` | `#CA3521` / `#FFEDEB` | ARR at risk ≥ $50k |
-| `--color-risk-high` / `-subtle` | `#B38600` / `#FFF7D6` | $10k–$50k |
-| `--color-risk-low` / `-subtle` | `#44546F` / `#F1F2F4` | < $10k / volume-only |
-| `--color-success` / `-subtle` | `#22A06B` / `#DCFFF1` | 100% citation verified, approved |
-| `--color-info` / `-subtle` | `#1D7F8C` / `#E7F9FF` | connector synced, neutral notices |
-| `--color-discovery` / `-subtle` | `#6E5DC6` / `#F3F0FF` | AI-generated theme, cluster id |
+| **Evergreen** (existing brand) | `#0F766E` · hover `#0C655D` · tint `#E3F1EE` | **The one primary action per view** (`Approve & ship`, `Run analysis`), links to shipped issues, brand mark |
+| **Marine** (US/Australian Open hard-court blue) | `#1E8FD5` · hover `#1877B4` · text-safe `#0B5C93` · tint `#E8F3FC` | The *intelligence* accent: discovered-theme pills, P@3/insight metrics, pipeline progress, focus rings, charts. Bright marine is a large-text/icon/fill colour (3.53:1 on white) — its `-ink` variant carries body-size text |
+| **Sage** | `#9DAF8E` · text-safe `#5F7157` · tint `#F0F3EA` | Quiet neutral: low-risk tiers, sync/metadata chips, wells, selection |
+| **Ink black** | `#0C1310` · raised `#161F1A` · border `#242E28` · on-ink `#FFFFFF` | Body text, and the optional **ink chrome** bar for demo/landing surfaces |
+| Surfaces | `#FFFFFF` / sunken `#F6F8F2` (sage-tinted paper) / hover `#EEF2E7` | 4 elevation planes: sunken, default, raised, overlay |
+| Lines | `#DCE3D3` · strong `#BFC9B2` | 1px hairlines, input borders |
+| Text | `#0C1310` · subtle `#48544A` · subtlest `#6C7A6E` | Headings/body, secondary, metadata (all ≥ 4.5:1 on white) |
+| Revenue-at-risk | critical `#BE3A2B` / `#FBE9E7` · high `#8A5F10` / `#FAF1DC` · low sage `#5F7157` / `#F0F3EA` | ≥$50k, $10k–50k, below |
+| Verified / neutral | success sea-green `#1F6B41` / `#E7F3EA` · info sage · discovery marine | 100% verbatim citations, sync state, AI themes |
 
-Dark mode ships as a `[data-theme="dark"]` override block using ADS dark values (`#1D2125` surface, `#22272B` raised, `#B6C2CF` text, `#579DFF` brand) — tokens are already structured for it; the lab has a toggle to prove it. Default remains **light**, because that is what "looks like Atlassian".
+**Where marine earns its place:** the test of a good accent is that it is never decorative. Marine marks every place where *the machine inferred something* — the cluster pill (`CL-04`), the P@3 metric, the pipeline stepper, the AI-generated PRD block — while evergreen stays reserved for the human decision to ship. That split is the palette's whole argument.
 
-> ⚠️ **Decision needed:** `Design.md` currently specifies the opposite (dark slate + indigo). Phase 0 makes light the source of truth; `Design.md` must be rewritten or explicitly marked superseded in Phase 5.
+**Two rules**
+1. **Evergreen = decision, marine = inference.** Never swap them; never use both in one component's primary action.
+2. **Large vs small text.** Marine and sage are fills/large-text colours; for body-size coloured text use `--accent-ink`, `--sage-ink`, `--brand` (evergreen), all of which clear 4.5:1.
+
+**Filled-surface labels flip in dark mode.** `--on-brand` / `--on-accent` / `--on-ink` exist because in dark mode the greens and marine are *light*, so buttons take ink-black labels (`#0B100D`, 7.38:1) instead of white (which would be 2.60:1). Never hardcode `text-white` on a coloured fill.
+
+**Dark mode** is a full token override (`[data-theme="dark"]`): surfaces `#0B100D` / `#070A08`, text `#E9EFE8`, evergreen `#35B39C`, marine `#4FA9E8`, sage `#8FA37F`, ink chrome stays dark (`#141C16`) because it is a surface, not a text colour. Default remains **light**.
+
+**Audited, not eyeballed.** `npm run check:contrast` parses `globals.css`, mirrors the CSS cascade and fails the build script if any of the 34 token pairs (17 pairs × 2 themes) drops below its WCAG target — including the filled-button and risk-lozenge combinations that usually break.
 
 ### 5.2 Typography
 
@@ -237,7 +247,7 @@ Pulled from the live index ([all components](https://reactbits.dev/get-started/i
 ### 9.1 Phases, effort, acceptance
 | Phase | Work | Effort | Done when |
 | :--- | :--- | :--- | :--- |
-| **P0 — Tokens & shell** ✅ | `globals.css` token layer, `next/font` (Inter + JetBrains Mono), primitives glue (`.field`, focus rings), legacy classes preserved | 3h | App still runs; no hardcoded `#0f766e` in new code |
+| **P0 — Tokens & shell** ✅ | `globals.css` token layer (sage/evergreen/ink/marine, light + dark), self-hosted Inter + JetBrains Mono, primitives glue, legacy classes preserved, `npm run check:contrast` | 3h | App still runs; no hardcoded hex in new code; contrast audit passes |
 | **P1 — Primitives + lab** ✅ | `components/ui/*` (Lozenge, Button, Surface, MetricTile, SectionHeader, Tabs), `components/reactbits/*` (4 vendored), `/design` lab with dark-mode toggle | 4h | `/design` renders the full Calm Ops language with mock data; `npm run build` clean |
 | **P2 — Triage board** | Two-pane queue + inspector, in-place approve/reject, `Magic Bento` top-3, `Stepper` run panel | 6–8h | A theme can be reviewed, edited, approved and shipped **without opening a modal**; keyboard-navigable |
 | **P3 — Sources & connectors** | Source table, upload queue, connector tiles with sync lozenges | 4h | All existing flows (upload/folder/meeting/Drive/Notion/Slack/GitHub) preserved |
