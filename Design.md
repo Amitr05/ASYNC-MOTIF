@@ -1,5 +1,7 @@
 # Design System & UI Specification
 
+> ⚠️ **Superseded in part (2026-09-30).** The colour, typography and component decisions below (dark slate `#0B0F17` + indigo) are being replaced by the **"Calm Ops"** light system described in [`docs/ui/UI-REDESIGN-PLAN.md`](docs/ui/UI-REDESIGN-PLAN.md) and implemented as tokens in `triage-ui/src/app/globals.css`. The product principles in §1 (density, evidence vs synthesis, financial urgency) still hold. This document will be rewritten in Phase 5 — until then, treat the plan and the tokens as the source of truth.
+
 ## Project: **Motif**
 > *Visual language, design tokens, component architecture, and typography for a data-dense PM triage cockpit.*
 
